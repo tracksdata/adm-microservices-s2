@@ -37,7 +37,7 @@ public class SearchRestController {
 		
 	}
 	
-	@GetMapping("{flightNumber}/{origin}/{destination}/{flightDate}")
+	@GetMapping("/findFlight/{flightNumber}/{origin}/{destination}/{flightDate}")
 	public Flight findFlightByFlightNumberAndOriginAndDestinationAndFlightDate(
 			@PathVariable String flightNumber,
 			@PathVariable String origin,

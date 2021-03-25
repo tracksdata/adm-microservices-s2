@@ -27,7 +27,7 @@ public class Receiver {
 		System.out
 				.println(">>>>>> Search Microservice Updating Inventory Details given by booking MicroService <<<<<<<");
 		searchService.updateInventory((String) flightDetails.get("FLIGHT_NUMBER"),
-				(String) flightDetails.get("FLIGHT_ORIGIN"), (String) flightDetails.get("DESTINATION"),
+				(String) flightDetails.get("ORIGIN"), (String) flightDetails.get("DESTINATION"),
 				(LocalDate) flightDetails.get("FLIGHT_DATE"), (Integer) flightDetails.get("NEW_INVENTORY"));
 		System.out.println(">>>>>>> Inventory Updation Completed <<<<<<<<");
 	}
