@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "db30083b-d017-44ed-8c85-f5e769687846",
+		"name": "Flight",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/pss/94",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/pss/94",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pss",
+						"94"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/pss",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origin\":\"DELHI\",\n    \"destination\":\"CHENNAI\",\n    \"flightDate\":\"2021-02-26\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/pss",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pss"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/api/fare/AI-840/Delhi/Chennai/2021-02-26",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/fare/AI-840/Delhi/Chennai/2021-02-26",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"fare",
+						"AI-840",
+						"Delhi",
+						"Chennai",
+						"2021-02-26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/api/search/findFlight/AI-840/Delhi/Chennai/2021-02-26",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/search/findFlight/AI-840/Delhi/Chennai/2021-02-26",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"search",
+						"findFlight",
+						"AI-840",
+						"Delhi",
+						"Chennai",
+						"2021-02-26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/api/book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"flightNumber\":\"AI-840\",\n    \"origin\":\"Delhi\",\n    \"destination\":\"Chennai\",\n    \"flightDate\":\"2021-02-26\",\n    \"numberofPassengers\":3,\n    \"passenger\":{\n        \"firstName\":\"Praveen\",\n        \"lastName\":\"Reddy\",\n        \"emailAddress\":\"praveen@abc.com\",\n        \"gender\":\"Male\",\n        \"mobileNumber\":8765453234,\n        \"coPassengers\":[\n            {\n                \"firstName\":\"Rose\",\n                \"lastName\":\"Kim\",\n                \"gender\":\"Female\"\n            },\n             {\n                \"firstName\":\"Bucky\",\n                \"lastName\":\"Wall\",\n                \"gender\":\"Male\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/api/book/110",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/book/110",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"book",
+						"110"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8084/api/checkin/114",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/checkin/114",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"checkin",
+						"114"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

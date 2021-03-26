@@ -103,6 +103,15 @@ public class BookingServiceImpl implements BookingService {
 	}
 	
 	
+	//update booking status for checkin passengers
+	public void updateStatus(String status,int bookingId) {
+		
+		BookingRecord br= bookingDao.findById(bookingId).orElse(null);
+		br.setStatus(status);
+		bookingDao.save(br);
+	}
+	
+	
 	@Override
 	public BookingRecord getBookingInfo(int id) {
 		return bookingDao.findById(id).orElse(null);

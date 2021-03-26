@@ -8,4 +8,5 @@ public interface BookingService {
 
 	BookingRecord getBookingInfo(int id);
 
+	public void updateStatus(String status,int bookingId);
 }
