@@ -1,0 +1,120 @@
+package com.cts.flight.service;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.stereotype.Service;
+
+import com.cts.flight.controller.Sender;
+import com.cts.flight.dao.BookingDao;
+import com.cts.flight.entity.BookingRecord;
+import com.cts.flight.entity.CoPassenger;
+import com.cts.flight.entity.Fare;
+import com.cts.flight.entity.Flight;
+
+@Service
+@EnableFeignClients
+public class BookingServiceImpl implements BookingService {
+
+	@Autowired
+	private BookingDao bookingDao;
+
+	@Autowired
+	private Sender sender;
+
+	// @Autowired
+	// private RestTemplate restTemplate;
+
+	// @Bean
+	// public RestTemplate restTemplate() {
+	// return new RestTemplate();
+	// }
+
+//	private String searchUrl = "http://localhost:8082/api/search";
+//	private String fareUrl = "http://localhost:8081/api/fare";
+
+	@Autowired
+	private SearchServiceProxy searchServiceProxy;
+	@Autowired
+	private FareServiceProxy fareServiceProxy;
+
+	@Override
+	public BookingRecord bookFlight(SearchQuery query) {
+
+		System.out.println("==================================================");
+		System.out.println("Passenger name: " + query.getPassenger().getFirstName());
+		if (query.getPassenger().getCoPassengers().size() != 0) {
+			for (CoPassenger cp : query.getPassenger().getCoPassengers()) {
+				System.out.println("First name: " + cp.getFirstName());
+				System.out.println("Last Name: " + cp.getLastName());
+				System.out.println("Gender: " + cp.getGender());
+			}
+		}
+		System.out.println("==================================================");
+
+		BookingRecord bookingRecord = null;
+
+		Fare fare = fareServiceProxy.getFare(query.getFlightNumber(), query.getOrigin(), query.getDestination(),
+				query.getFlightDate());
+		// restTemplate.getForObject(fareUrl + "/" + query.getFlightNumber() + "/" +
+		// query.getOrigin() + "/"
+		// + query.getDestination() + "/" + query.getFlightDate(), Fare.class);
+
+		Flight flight = searchServiceProxy.getFlight(query.getFlightNumber(), query.getOrigin(), query.getDestination(),
+				query.getFlightDate());
+		// restTemplate.getForObject(searchUrl + "/findFlight/" +
+		// query.getFlightNumber() + "/"
+		// + query.getOrigin() + "/" + query.getDestination() + "/" +
+		// query.getFlightDate(), Flight.class);
+
+		if (flight.getInventory().getCount() < query.getNumberofPassengers()) {
+			System.out.println(">>>>>>>> No more Seats Avialble <<<<<<<<<");
+			return null;
+		}
+
+		if (flight != null) {
+			System.out.println(">>>>>>>>> FLIGHT INFO <<<<<<<<");
+
+			bookingRecord = new BookingRecord(flight.getFlightNumber(), flight.getOrigin(), flight.getDestination(),
+					flight.getFare().getFare() * query.getNumberofPassengers(), flight.getFlightDate(),
+					flight.getFlightTime(), LocalDateTime.now(), "Confirmed", flight.getFlightInfo(),
+					query.getPassenger());
+
+			System.out.println("Booking Record: " + bookingRecord);
+			if (query.getPassenger().getCoPassengers().size() == query.getNumberofPassengers() - 1) {
+
+				bookingDao.save(bookingRecord);
+			} else {
+				System.out.println("Passenger count is not enogh. Booking is nott done..");
+			}
+		}
+
+		Map<String, Object> bookingDetails = new HashMap<>();
+		bookingDetails.put("FLIGHT_NUMBER", flight.getFlightNumber());
+		bookingDetails.put("FLIGHT_DATE", flight.getFlightDate());
+		bookingDetails.put("ORIGIN", flight.getOrigin());
+		bookingDetails.put("DESTINATION", flight.getDestination());
+		bookingDetails.put("NEW_INVENTORY", query.getNumberofPassengers());
+
+		sender.sendInventoryData(bookingDetails);
+		return bookingRecord;
+
+	}
+
+	// update booking status for checkin passengers
+	public void updateStatus(String status, int bookingId) {
+
+		BookingRecord br = bookingDao.findById(bookingId).orElse(null);
+		br.setStatus(status);
+		bookingDao.save(br);
+	}
+
+	@Override
+	public BookingRecord getBookingInfo(int id) {
+		return bookingDao.findById(id).orElse(null);
+	}
+
+}
